@@ -115,7 +115,20 @@ class LinkedList {
         }
         return `${output} ( ${counter.value} ) -> ${counter.next}`;
     }
+    insertAt(value, index) {
+     //if head doesn't exist or index value === 0, run preAppend to put it at the front
+     if (index === 0 || !this.head) return this.preAppend(value)
+     // get node one index before index
+     let currentNode = this.at(index - 1)
+     //if node doesn't exist (index to high), run append, to put new node on end
+     if (currentNode === null) return this.append(value)
+     // if node does exist, temp save next node
+     let nextNode = currentNode.next;
+      //change currentNode.next to a new node with value and the saved nextNode
+     currentNode.next = new Node(value, nextNode)
+    }
 }
+
 
 class Node {
     constructor(value = null, next = null) {
@@ -145,3 +158,5 @@ console.log(list.find(4));     // [2]
 console.log(list.find(5));     // (2) [4, 6]
 console.log(list.find(7));     // null
 console.log(list.toString());  // ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
+list.insertAt(1, 3)            //            (9,4,3,1,5,2,5)
+console.log(list.toString());  //  ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 1 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
