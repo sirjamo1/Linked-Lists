@@ -116,47 +116,62 @@ class LinkedList {
         return `${output} ( ${counter.value} ) -> ${counter.next}`;
     }
     insertAt(value, index) {
-     //if head doesn't exist or index value === 0, run preAppend to put it at the front
-     if (index === 0 || !this.head) return this.preAppend(value)
-     // get node one index before index
-     let currentNode = this.at(index - 1)
-     //if node doesn't exist (index to high), run append, to put new node on end
-     if (currentNode === null) return this.append(value)
-     // if node does exist, temp save next node
-     let nextNode = currentNode.next;
-      //change currentNode.next to a new node with value and the saved nextNode
-     currentNode.next = new Node(value, nextNode)
+        //if head doesn't exist or index value === 0, run preAppend to put it at the front
+        if (index === 0 || !this.head) return this.preAppend(value);
+        // get node one index before index
+        let currentNode = this.at(index - 1);
+        //if node doesn't exist (index to high), run append, to put new node on end
+        if (currentNode === null) return this.append(value);
+        // if node does exist, temp save next node
+        let nextNode = currentNode.next;
+        //change currentNode.next to a new node with value and the saved nextNode
+        currentNode.next = new Node(value, nextNode);
+    }
+    removeAt(index) {
+        // if index is larger or === to size (not index) return message
+        if (index >= this.size()) return console.log("No such index");
+        // assign index at/before (can be same node if index = 0)
+        let nodeBeforeIndex = this.at(index - 1);
+        let nodeAtIndex = this.at(index);
+        // if index doesn't === 0, assign NodeBeforeNode.next with nodeAtIndex.next (skipping node at index)
+        if (index !== 0) return (nodeBeforeIndex.next = nodeAtIndex.next);
+        // if there is only one node, change value to null
+        if (nodeAtIndex.next === null) return (nodeAtIndex.value = null);
+        // if node at index 0 assign node at index 1 to head node
+        this.head = this.at(index + 1);
+        return this.head;
     }
 }
-
 
 class Node {
     constructor(value = null, next = null) {
         this.value = value;
         this.next = next;
     }
-} 
+}
 // Create new list class
 let list = new LinkedList();
 
-list.append(3);                // 3 to end   (3)
-list.append(5);                // 5 to end   (3,5)
-list.append(2);                // 2 to end   (3,5,2)
-list.append(5);                // 5 to end   (3,5,2,5)
-list.append(7);                // 7 to end   (3,5,2,5,7)
-list.preAppend(4);             // 4 to start (4,3,5,2,5,7)
-list.preAppend(9);             // 9 to start (9,4,3,5,2,5,7)
-console.log(list.size());      // 7
-console.log(list.getHead());   // Node {value: 9, next: Node}
-console.log(list.getTail());   // Node {value: 7, next: null}
-console.log(list.at(3));       // Node {value: 5, next: Node}
-console.log(list.at(7));       // null
-list.pop();                    //            (9,4,3,5,2,5)
-console.log(list.contains(5)); // true
-console.log(list.contains(7)); // false
-console.log(list.find(4));     // [2]
-console.log(list.find(5));     // (2) [4, 6]
-console.log(list.find(7));     // null
-console.log(list.toString());  // ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
-list.insertAt(1, 3)            //            (9,4,3,1,5,2,5)
-console.log(list.toString());  //  ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 1 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
+list.append(3);                 // 3 to end   (3)
+list.append(5);                 // 5 to end   (3,5)
+list.append(2);                 // 2 to end   (3,5,2)
+list.append(5);                 // 5 to end   (3,5,2,5)
+list.append(7);                 // 7 to end   (3,5,2,5,7)
+list.preAppend(4);              // 4 to start (4,3,5,2,5,7)
+list.preAppend(9);              // 9 to start (9,4,3,5,2,5,7)
+console.log(list.size());       // 7
+console.log(list.getHead());    // Node {value: 9, next: Node}
+console.log(list.getTail());    // Node {value: 7, next: null}
+console.log(list.at(3));        // Node {value: 5, next: Node}
+console.log(list.at(7));        // null
+list.pop();                     //            (9,4,3,5,2,5)
+console.log(list.contains(5));  // true
+console.log(list.contains(7));  // false
+console.log(list.find(4));      // [2]
+console.log(list.find(5));      // (2) [4, 6]
+console.log(list.find(7));      // null
+console.log(list.toString());   // ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
+list.insertAt(1, 3);            //            (9,4,3,1,5,2,5)
+console.log(list.toString());   //  ( 9 ) -> ( 4 ) -> ( 3 ) -> ( 1 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
+list.removeAt(0);               //            (4,3,1,5,2,5)
+console.log(list.toString());   // ( 4 ) -> ( 3 ) -> ( 1 ) -> ( 5 ) -> ( 2 ) -> ( 5 ) -> null
